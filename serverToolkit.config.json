@@ -1,0 +1,55 @@
+{
+  "name": "Unified Messaging Server",
+  "description": "Next Generation Server Toolkit config for encrypted, multi-platform messaging.",
+  "routes": {
+    "/send-message": {
+      "method": "POST",
+      "middleware": [
+        "auth",
+        "jsonBody",
+        "encryption"
+      ],
+      "handler": "sendMessageHandler"
+    },
+    "/telegram/webhook": {
+      "method": "POST",
+      "middleware": [
+        "jsonBody"
+      ],
+      "handler": "telegramWebhookHandler"
+    },
+    "/health": {
+      "method": "GET",
+      "handler": "healthCheckHandler"
+    }
+  },
+  "middleware": {
+    "auth": {
+      "type": "bearerToken",
+      "env": "AUTH_TOKEN"
+    },
+    "jsonBody": {
+      "type": "bodyParser"
+    },
+    "encryption": {
+      "type": "aes256",
+      "env": "ENCRYPTION_SECRET"
+    }
+  },
+  "deployment": {
+    "provider": "vercel",
+    "scripts": {
+      "deploy": "./deploy-to-vercel.sh",
+      "cdn": "./deploy-cdn.sh"
+    }
+  },
+  "logging": {
+    "enabled": true,
+    "format": "json",
+    "output": "logs/messages.log"
+  },
+  "monitoring": {
+    "healthCheck": "/health",
+    "cron": "./ping-test.sh"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "name": "unified-messaging-staging",
+  "alias": ["staging.messaging.neoncovenant.com"],
+  "env": {
+    "NODE_ENV": "staging"
+  },
+  "routes": [
+    { "src": "/(.*)", "dest": "/server.js" }
+  ],
+  "builds": [
+    { "src": "server.js", "use": "@vercel/node" }
+  ]
+}
